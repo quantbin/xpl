@@ -1,7 +1,3 @@
-# xpl
-Excel Programming Language
+# TPC
 
-Scripting language that automates Excel. Cross between Tcl and OCaml. 
-
-Unit of execution is line:
-  EXPR|EXPR
+Scripting language that automates Excel. 
