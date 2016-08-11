@@ -24,7 +24,7 @@ Lists:
     [1]                         #single element list
     1 2 3 4                     #sequence of values is automatically converted to list
     [[1 2] 3 [4]]               #embedded lists
-    1 2 3, 4 5 6                #same as (1 2 3) (4 5 6)
+    1 2 3, 4 5 6                #same as [1 2 3] [4 5 6]
     ['a 1 true 1.2 2016.08.09]  #mixing types is allowed (lists are not typed)
 
 Dictionaries:
@@ -142,7 +142,7 @@ Dictionaries
     set z 'na
 "na"
 
-    puts x@'{z}me           
+    puts x@'[z]me           
 "joe"
 
 Proc (verb)
@@ -158,7 +158,7 @@ evaluated as is (apply implicit identity op to parameters).
     1
 1
     
-	x
+    x
 1
 
     1 2 3 x
@@ -209,10 +209,13 @@ Adverbs
 -------
 for: apply proc to each element, return null:
     1 2 3 4;for . {puts x}    
-1 2 3 4
+1 
+2 
+3 
+4
 
 map: apply proc to each element, return transformed list:
-    1 2 3 4;map . {* x 2};puts x    
+    1 2 3 4;map . {* x 2};puts .
 2 4 6 8
 
 insert: insert proc between all elements, return total:
@@ -317,7 +320,7 @@ Reflection/Types:
     cast 1 'float
 1.0
 
-	cast 1 'str        
+    cast 1 'str        
 "1.0"
 
     parse "3.14" 'float
@@ -439,7 +442,7 @@ Lists, dictionaries, tables:
     join t1 'col1 t2 'col2      
 <join tables (inner)>
     
-	union 1 2 3, 2 3 4
+    union 1 2 3, 2 3 4
 1 2 3 4
 
     inter 1 2 3, 2 3 4
