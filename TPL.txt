@@ -139,7 +139,7 @@ Dictionaries
     puts x@['name 'code]    
 "joe" 1234
 
-    set z 'na
+    set 'z 'na
 "na"
 
     puts x@'[z]me           
@@ -524,7 +524,7 @@ Sliding window:
 	set 'slide {d w f:count d;- . w;seq .;map . {slice d x w;f .}}
 
 Moving average:
-	{d w:slide d w +}
+	{d w:slide d w {+ x;% . w}}
 
 List of variables defined in each scope and print their values:
     tpl/scopes;idx .;. tpl/scopes;flip .
