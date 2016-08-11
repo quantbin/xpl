@@ -515,7 +515,7 @@ Is matrix symmetrical?
     {flip x;eq . x}
 
 Matrix trace (sum of diagonal elements):
-    {m:idx m;map . {i:m@i@i};+ .}
+    {m:idx m;map . {m@x@x};+ .}
 
 Is matrix square?
     {m:count m;set 'nrows .;map m {r:count r;eq . nrows};and .}
