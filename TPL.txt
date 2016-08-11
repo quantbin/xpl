@@ -49,8 +49,10 @@ Embedded lambdas:
 
 Variables
 ---------
-Variable assignment takes name of the variable as first parameter (note, that name is a string, e.g. 'x) and value as a second parameter.
-Variables represent entries in scope's hash table, where variable name is the key pointing to a value.
+Variable assignment takes name of the variable as first parameter 
+(note, that name is a string, e.g. 'x) and value as a second parameter.
+Variables represent entries in scope's hash table, where variable name is 
+the key pointing to a value.
     set 'x 1
 1
 
@@ -76,9 +78,12 @@ Reference:
     puts z
 11
 
-Note, that set command interprets first parameter as *name* of the variable (i.e. key in the scope hash table). 
-Therefore when assigning value to variable x, always refer to it by name, i.e. set 'x 1. If you omit tick, e.g. set x 1,
-then interpreter will dereference x, find its value and provide this value to set command as the variable name:
+Note, that set command interprets first parameter as *name* 
+of the variable (i.e. key in the scope hash table). 
+Therefore when assigning value to variable x, always refer to 
+it by name, i.e. set 'x 1. If you omit tick, e.g. set x 1,
+then interpreter will dereference x, find its value and 
+provide this value to set command as the variable name:
     set 'y 1
 1
 
@@ -88,7 +93,8 @@ then interpreter will dereference x, find its value and provide this value to se
     set x 2    #this will set value of y to 2
 2
 
-In languages that use = for assignment, x is interpreted differently based on its location relative to =, i.e.
+In languages that use = for assignment, x is interpreted 
+differently based on its location relative to =, i.e.
 symbol x can be both lvalue and rvalue without any decorations. 
 In TPL one has to make explicit difference between lvalue and rvalue.
 
@@ -145,8 +151,10 @@ An action. Takes list as a parameter. Returns a value.
 
 Expressions
 -----------
-If first element of expression is a proc (built-in or user-defined lambda), then it is invoked with rest of expression provided as a parameter (list).
-If first element of expression is not a proc, then expression is evaluated as is (apply implicit identity op to parameters).
+If first element of expression is a proc (built-in or user-defined lambda), 
+then it is invoked with rest of expression provided as a parameter (list).
+If first element of expression is not a proc, then expression is 
+evaluated as is (apply implicit identity op to parameters).
     1
 1
     
@@ -185,9 +193,12 @@ Programs
     set 'y 2;puts [+ x y]
 3
 
-Expression can reference the result of evaluation of previous expressions by using dots '.' notation.
-Results of each expression are kept on the stack. Current expression can reference top element of 
-the stack with single dot: '.'. Two dots reference second element on the stack etc:
+Expression can reference the result of evaluation of 
+previous expressions by using dots '.' notation.
+Results of each expression are kept on the stack. 
+Current expression can reference top element of 
+the stack with single dot: '.'. 
+Two dots reference second element on the stack etc:
     1
 1
 
@@ -214,13 +225,14 @@ filter: filter list, leave only elements the result in true:
 
 Scope
 -----
-Each call to a user-defined proc creates its own environment, where variables for that proc are stored.
-    set 'a 1                      #global scope, level 0; contains 'a'
-    {                             #scope level 1; contains 'b'; can see 'a' from sope level 0
+Each call to a user-defined proc creates its own environment, 
+where variables for that proc are stored.
+    set 'a 1     #global scope, level 0; contains 'a'
+    {            #scope level 1; contains 'b'; can see 'a' from sope level 0
         puts a;set 'b 2
-        {                                   #scope level 2
-                                            #contains 'c' and 'a' that shadows 'a' from global scope
-                                            #can see 'b' from previous scope
+        {        #scope level 2
+                 #contains 'c' and 'a' that shadows 'a' from global scope
+                 #can see 'b' from previous scope
             set 'a 11;puts a b;set 'c 3
         }
     }
@@ -234,8 +246,10 @@ Due to dynamic scoping following is possible:
 
 Matrices/Tables
 ---------------
-List of lists represents matrix. Note that we store matrices by row, i.e. matrix is a list of rows, that in turn are lists of values.
-There is no guarantee that dimensions will match, lists can be of different lenghts. It is up to a user to enforce proper structure.
+List of lists represents matrix. Note that we store matrices by row, 
+i.e. matrix is a list of rows, that in turn are lists of values.
+There is no guarantee that dimensions will match, lists can be of 
+different lenghts. It is up to a user to enforce proper structure.
 
 Following martix
 1 2 3
@@ -264,14 +278,16 @@ Dictionary of lists represents table:
     flip a;for . {puts x}   
 1 4, 2 5, 3 6
 
-Note that flipping table or matrix does not reallocate memory, it just sets the flag that indicates how the table is traversed - by row or by column.
+Note that flipping table or matrix does not reallocate memory, 
+it just sets the flag that indicates how the table is traversed - by row or by column.
 
 GoTo!
 -----
     set 'a 1
     eq a 1;if . true {goto 'L1};puts 'notone!;goto 'done;label 'L1;puts 'one!;label 'done;
 
-More useful example (note that goto takes additional parameters that will be assigned to variables specified in label):
+More useful example (note that goto takes additional parameters 
+that will be assigned to variables specified in label):
     1 2 3 4 5
     for . {eq x 5;switch . true {goto 'found x}};goto 'notfound
     label 'found 'five
@@ -280,8 +296,10 @@ More useful example (note that goto takes additional parameters that will be ass
 
 Trap
 ----
-If no panic took place, trap command is ignored; otherwise panic will unwind the stack until it encounters first trap.
-Panic parameters are assigned to names in trap command, therefore number of panic parameters should match number of trap parameters.
+If no panic took place, trap command is ignored; otherwise panic will 
+unwind the stack until it encounters first trap.
+Panic parameters are assigned to names in trap command, therefore 
+number of panic parameters should match number of trap parameters.
     {... panic 'notfound 123;...};trap 'msg 'code; ...
 
 Built-in procs
@@ -472,12 +490,17 @@ hello
 null
 
 Misc:
-    load /path/to/module/file          #eval this file
-    load /path/to/module/folder        #eval all files in this folder
+    #eval this file
+    load /path/to/module/file          
+    #eval all files in this folder
+    load /path/to/module/folder        
     panic 'abortmission;errcode={err}
-    save                               #save global scope; tables are stored in csv files; lists in json; atoms all in one file
-    save 'x 'y 'z                      #save specified variables from global scope, forget the rest
-    clean                              clean all scopes
+    #save global scope; tables are stored in csv files; lists in json; atoms all in one file
+    save                               
+    #save specified variables from global scope, forget the rest
+    save 'x 'y 'z                      
+    #clean all scopes
+    clean                              
     exit
 
 Examples
