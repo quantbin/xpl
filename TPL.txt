@@ -512,7 +512,7 @@ Inner product:
     {flip x y;map . *;+ .}
 
 Is matrix symmetrical?
-    {flip x;eq . x}
+    {clone x;flip x;eq . ..}
 
 Matrix trace (sum of diagonal elements):
     {m:idx m;map . {m@x@x};+ .}
