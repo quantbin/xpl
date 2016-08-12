@@ -182,10 +182,7 @@ Embedded expressions. First proc 'f' is invoked, then 'g':
 
 String substitution
 -------------------
-    set 'x 1;set 'y 2
-2
-
-    puts "x=[x], y=[y]"
+    set 'x 1;set 'y 2;puts "x=[x], y=[y]"
 "x=1, y=2"
 
 Programs
