@@ -199,10 +199,7 @@ Results of each expression are kept on the stack.
 Current expression can reference top element of 
 the stack with single dot: '.'. 
 Two dots reference second element on the stack etc:
-    1
-1
-
-    2;+ . ..;puts .    
+    1;2;+ . ..;puts .    
 3
 
 Adverbs
