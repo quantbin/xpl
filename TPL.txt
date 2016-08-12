@@ -170,6 +170,9 @@ evaluated as is (apply implicit identity op to parameters).
     {puts 'insidelambda}
 "insidelambda"
 
+    {a b:+ a b} 1 2
+3
+
     {a b:+ a b}
 ERROR: missing parameters
 
