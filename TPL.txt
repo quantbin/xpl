@@ -300,7 +300,7 @@ If no panic took place, trap command is ignored; otherwise panic will
 unwind the stack until it encounters first trap.
 Panic parameters are assigned to names in trap command, therefore 
 number of panic parameters should match number of trap parameters.
-    {... panic 'notfound 123;...};trap 'msg 'code; ...
+    {... panic 'notfound 123;...};trap {msg code: puts "[msg], [code]"}; ...
 
 Built-in procs
 --------------
