@@ -318,7 +318,7 @@ Reflection/Types:
 1.0
 
     cast 1 'str        
-"1.0"
+"1"
 
     parse "3.14" 'float
 3.14
