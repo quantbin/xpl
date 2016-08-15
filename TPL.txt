@@ -539,7 +539,8 @@ set rows [[1] row]
 seq n;for . {
 	insert row +
 	set row [1 . 1]
-	set rows [rows row] #NB reallocates array on each iteration
+	join rows [row]
+	set rows .
 }
 
 ---------------------------
