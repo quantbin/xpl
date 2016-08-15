@@ -527,6 +527,21 @@ List of variables defined in each scope and print their values:
     tpl/scopes;idx .;. tpl/scopes;flip .
     for . {is:puts 'scope{is@0};keys is@1;for . {puts '[x]=[s@x]}}
 
+Pascal tirangle:
+.....1.....
+....1.1....
+...1.2.1...
+..1.3.3.1..
+.1.4.6.4.1.
+
+set row [1 1]
+set rows [[1] row]
+seq n;for . {
+	insert row +
+	set row [1 . 1]
+	set rows [rows row] #NB reallocates array on each iteration
+}
+
 ---------------------------
 Scratchpad:
 
