@@ -546,6 +546,14 @@ iter [1 1] n {
 	[1 . 1]
 }
 
+Matrix multiplication:
+map m1 {m1r:
+	map [flip m2] {m2c:
+		flip m1r m2c;map . *;+ .
+	}
+}
+
+
 ---------------------------
 Scratchpad:
 
