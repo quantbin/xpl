@@ -220,7 +220,9 @@ insert: insert proc between all elements, return total:
 10
 
 iter: iteratively call lambda specified number of times 
-passing result of previous call to next iteration:
+passing result of previous call to next iteration;
+iter retains all intermediate results and returns a
+list:
     iter 0 10 {set p x;incr x;* p x}
 1 2 6 24 129 ... 10!
 
