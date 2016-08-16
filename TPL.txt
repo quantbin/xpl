@@ -219,6 +219,11 @@ insert: insert proc between all elements, return total:
     1 2 3 4;insert . +;puts .    
 10
 
+iter: iteratively call lambda specified number of times 
+passing result of previous call to next iteration:
+    iter 0 10 {set p x;incr x;* p x}
+1 2 6 24 129 ... 10!
+
 filter: filter list, leave only elements the result in true:
     1 2 3 4;filter . {mod x 2;eq . 0}  
 2 4
@@ -534,13 +539,9 @@ Pascal tirangle:
 ..1.3.3.1..
 .1.4.6.4.1.
 
-set row [1 1]
-set rows [[1] row]
-seq n;for . {
-	insert row +
-	set row [1 . 1]
-	join rows [row]
-	set rows .
+iter [1 1] n {
+	insert x +
+	[1 . 1]
 }
 
 ---------------------------
