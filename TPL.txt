@@ -32,75 +32,41 @@ Dictionaries:
 
 Lambdas (procs)
 ---------------
-    set 'f {a b:+ a b 10}
+    f={a b:+ a b 10}
 <lambda>
 
 Implicit parameters: x y z (up to three).
-    set 'f {+ x y 10}
+    f={+ x y 10}
 <lambda>
 
 Embedded lambdas:
-    set 'h {a b c:
-        set 'f {z:log z}
-        set 't f 11
+    h={a b c:
+        f={z:log z}
+        t=f 11
         + a b t
     }
 <lambda>
 
 Variables
 ---------
-Variable assignment takes name of the variable as first parameter 
-(note, that name is a string, e.g. 'x) and value as a second parameter.
-Variables represent entries in scope's hash table, where variable name is 
-the key pointing to a value.
-    set 'x 1
+    x=1
 1
 
-    set 'lst [1 2 3]
+    lst=[1 2 3]
 1 2 3
 
-    set 'f {a b:+ a b 10}    #store lambda in variable
+    f={a b:+ a b 10}    #store lambda in variable
 {...}
 
-    set ['x 'y] [1 2]        #multiple assignment
+    x y=[1 2]        #multiple assignment
 1 2
 
-    set 'x 'y, 1 2           #multiple assignment
+    x y=1 2           #multiple assignment
 1 2
-
-Reference:
-    set 'y 11
-11
-
-    set 'z 'y
-"y"
-
-    puts z
-11
-
-Note, that set command interprets first parameter as *name* 
-of the variable (i.e. key in the scope hash table). 
-Therefore when assigning value to variable x, always refer to 
-it by name, i.e. set 'x 1. If you omit tick, e.g. set x 1,
-then interpreter will dereference x, find its value and 
-provide this value to set command as the variable name:
-    set 'y 1
-1
-
-    set 'x 'y
-"y"
-
-    set x 2    #this will set value of y to 2
-2
-
-In languages that use = for assignment, x is interpreted 
-differently based on its location relative to =, i.e.
-symbol x can be both lvalue and rvalue without any decorations. 
-In TPL one has to make explicit difference between lvalue and rvalue.
 
 Accessing list elements
 -----------------------
-    set x [11 22 33 44]
+    x=[11 22 33 44]
 11 22 33 44
 
     puts x@1        
@@ -109,14 +75,14 @@ Accessing list elements
     puts x@[0 1]    
 11 22
 
-    set 'i 2
+    i=2
 2
 
     puts x@i        
 33
 
 Lists of lists:
-    set y [1 2 3] [4 5 6]
+    y=[1 2 3] [4 5 6]
 1 2 3, 4 5 6
 
     puts y@0@0
@@ -127,10 +93,10 @@ Lists of lists:
 
 Dictionaries
 ------------
-    set x@'name 'joe
+    x@'name='joe
 "joe"
 
-    set x@'code 1234
+    x@'code=1234
 1234
 
     puts x@'name            
@@ -139,10 +105,10 @@ Dictionaries
     puts x@['name 'code]    
 "joe" 1234
 
-    set 'z 'na
+    z='na
 "na"
 
-    puts x@'[z]me           
+    puts x@'[z]me
 "joe"
 
 Proc (verb)
@@ -182,15 +148,15 @@ Embedded expressions. First proc 'f' is invoked, then 'g':
 
 String substitution
 -------------------
-    set 'x 1;set 'y 2;puts "x=[x], y=[y]"
+    x=1;y=2;puts "x=[x], y=[y]"
 "x=1, y=2"
 
 Programs
 --------
-    set 'x 1
+    x=1
 1
 
-    set 'y 2;puts [+ x y]
+    y=2;puts [+ x y]
 3
 
 Expression can reference the result of evaluation of 
@@ -223,7 +189,7 @@ iter: iteratively call lambda specified number of times
 passing result of previous call to next iteration;
 iter retains all intermediate results and returns a
 list:
-    iter 0 10 {set p x;incr x;* p x}
+    iter 0 10 {p=x;incr x;* p x}
 1 2 6 24 129 ... 10!
 
 filter: filter list, leave only elements the result in true:
@@ -234,21 +200,21 @@ Scope
 -----
 Each call to a user-defined proc creates its own environment, 
 where variables for that proc are stored.
-    set 'a 1     #global scope, level 0; contains 'a'
+    a=1     #global scope, level 0; contains 'a'
     {            #scope level 1; contains 'b'; can see 'a' from sope level 0
-        puts a;set 'b 2
+        puts a;b=2
         {        #scope level 2
                  #contains 'c' and 'a' that shadows 'a' from global scope
                  #can see 'b' from previous scope
-            set 'a 11;puts a b;set 'c 3
+            a=11;puts a b;c=3
         }
     }
 
 Due to dynamic scoping following is possible:
-    set 'f {puts x}   #note that it references variable 'x' that is not defined in this scope 
+    f={puts x}   #note that it references variable 'x' that is not defined in this scope 
 {...}
 
-    set 'x 1;f        #proc f can see 'x' from previous scope
+    x=1;f        #proc f can see 'x' from previous scope
 1
 
 Matrices/Tables
@@ -276,7 +242,7 @@ or
     flip 1 2 3, 4 5 6
 
 Dictionary of lists represents table:
-    1 2 3;4 5 6;set a@'col1 ..;set a@'col2 ..
+    1 2 3;4 5 6;a@'col1=..;a@'col2=..
 4 5 6
 
     for a {puts x}
@@ -290,7 +256,7 @@ it just sets the flag that indicates how the table is traversed - by row or by c
 
 GoTo!
 -----
-    set 'a 1
+    a=1
     eq a 1;if . true {goto 'L1};puts 'notone!;goto 'done;label 'L1;puts 'one!;label 'done;
 
 More useful example (note that goto takes additional parameters 
@@ -374,7 +340,7 @@ true
     not true
 false
 
-    set 'x 7
+    x=7
 7
     lt x 10;gt x 0;and .. .  
 true
@@ -388,7 +354,7 @@ true
     gt 10 10   
 false
 
-	set 'x 2
+	x=2
 2
     switch x 1 {puts '1} 2 {puts '2} else {puts 'unknown}
 '2
@@ -404,8 +370,17 @@ Lists, dictionaries, tables:
     keys d                      
 <list of keys in dictionary d>
 
-    concat [1 2 3] [4 5 6]      
-1 2 3 4 5 6
+	join [1 2 3] 4
+1 2 3 4
+
+	join [enlist [1 2 3]] [enlist 4]
+[1 2 3] 4
+
+	[1 2 3] 4
+[1 2 3] 4
+
+	join [1 2 3]! 4		#append 4 to first list are return it, do not create new list
+1 2 3 4
 
     head 1 2 3 4                
 1
@@ -467,7 +442,8 @@ true
     idesc 5 12 1 24
 3 1 0 2
 
-List of indexes of a list (useful in iterating lists):
+List of indexes of a list (useful in iterating lists);
+Equivalent of: count x;decr .;seq .
     idx ['a 'b [1 2 3] 'c]
 0 1 2 3
 
@@ -475,7 +451,7 @@ IO:
     puts 'hello
 
 hello
-    gets;set 'userinput .
+    gets;userinput=.
 <user input>
 
     curl http://some.address    
@@ -522,10 +498,10 @@ Matrix trace (sum of diagonal elements):
     {m:idx m;map . {m@x@x};+ .}
 
 Is matrix square?
-    {m:count m;set 'nrows .;map m {r:count r;eq . nrows};and .}
+    {m:count m;nrows=.;map m {r:count r;eq . nrows};and .}
 
 Sliding window:
-	set 'slide {d w f:count d;- . w;seq .;map . {slice d x w;f .}}
+	slide={d w f:count d;- . w;seq .;map . {slice d x w;f .}}
 
 Moving average:
 	{d w:slide d w {+ x;% . w}}
@@ -557,10 +533,10 @@ map m1 {m1r:
 ---------------------------
 Scratchpad:
 
-[1 2 3]
-[F 1 2 3]
-[F~1 2 3]
-[F/1 2 3]
+- only = is diadic; anything else?
+- lists are a mess, e.g. enlist and []
+- trap looks very similar to matching; use same operator for if/match/trap?
+
 
 car[append[(A B C); (D E F)]]    
 (CAR (APPEND (QUOTE (A B C)) (QUOTE (D E F))))
