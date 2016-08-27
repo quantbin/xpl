@@ -20,15 +20,12 @@ Atoms:
     null
 
 Lists:
-    []                          #empty list
-    [1]                         #single element list
+    enlist                      #empty list
+    enlist 1                    #single element list
     1 2 3 4                     #sequence of values is automatically converted to list
     [[1 2] 3 [4]]               #embedded lists
     1 2 3, 4 5 6                #same as [1 2 3] [4 5 6]
     ['a 1 true 1.2 2016.08.09]  #mixing types is allowed (lists are not typed)
-
-Dictionaries:
-    dict [['key1 11] ['key2 'somethingelse] ['key3 [1 2 1.2]]]
 
 Lambdas (procs)
 ---------------
@@ -52,21 +49,18 @@ Variables
     x=1
 1
 
-    lst=[1 2 3]
+    lst=1 2 3
 1 2 3
 
     f={a b:+ a b 10}    #store lambda in variable
 {...}
 
-    x y=[1 2]        #multiple assignment
-1 2
-
-    x y=1 2           #multiple assignment
+    x y=1 2        #multiple assignment
 1 2
 
 Accessing list elements
 -----------------------
-    x=[11 22 33 44]
+    x=11 22 33 44
 11 22 33 44
 
     puts x@1        
@@ -217,8 +211,8 @@ Due to dynamic scoping following is possible:
     x=1;f        #proc f can see 'x' from previous scope
 1
 
-Matrices/Tables
----------------
+Tables
+------
 List of lists represents matrix. Note that we store matrices by row, 
 i.e. matrix is a list of rows, that in turn are lists of values.
 There is no guarantee that dimensions will match, lists can be of 
@@ -229,8 +223,6 @@ Following martix
 4 5 6
 can be represented as:
     [1 2 3] [4 5 6]
-or
-    1 2 3, 4 5 6
 
 Following martix
 1 4
@@ -254,18 +246,9 @@ Dictionary of lists represents table:
 Note that flipping table or matrix does not reallocate memory, 
 it just sets the flag that indicates how the table is traversed - by row or by column.
 
-GoTo!
------
-    a=1
-    eq a 1;if . true {goto 'L1};puts 'notone!;goto 'done;label 'L1;puts 'one!;label 'done;
-
-More useful example (note that goto takes additional parameters 
-that will be assigned to variables specified in label):
-    1 2 3 4 5
-    for . {eq x 5;switch . true {goto 'found x}};goto 'notfound
-    label 'found 'five
-    puts five            #5
-    label 'noutfound
+Conditional
+-----------
+eq x 1;if . {puts 'is1} else {puts 'not1}
 
 Trap
 ----
@@ -463,13 +446,13 @@ hello
     barf 'hello c:/dir/file.txt 
 <write string to file>
 
-    tpl/open 127.0.0.1          
-<connection handle to another TPL instance>
+    tpl/open 127.0.0.1:1967;conn=.
+<connection handle to another TPL instance (local host, port 1967)>
 
-    tpl/exec h {a:count a} x    
-<result of executing send lambda with specified parameters on remote instance>
+    conn {count x} [1 2 3 4]
+<result of executing send lambda with specified parameters on remote instance, i.e. count elem in array (4)>
 
-    tpl/close h
+    tpl/close conn
 null
 
 Misc:
@@ -477,7 +460,7 @@ Misc:
     load /path/to/module/file          
     #eval all files in this folder
     load /path/to/module/folder        
-    panic 'abortmission;errcode={err}
+    panic 'abortmission errcode
     #save global scope; tables are stored in csv files; lists in json; atoms all in one file
     save                               
     #save specified variables from global scope, forget the rest
@@ -504,11 +487,15 @@ Sliding window:
 	slide={d w f:count d;- . w;seq .;map . {slice d x w;f .}}
 
 Moving average:
-	{d w:slide d w {+ x;% . w}}
+	{d w:slide d w {+ x;/ . w}}
 
 List of variables defined in each scope and print their values:
-    tpl/scopes;idx .;. tpl/scopes;flip .
-    for . {is:puts 'scope{is@0};keys is@1;for . {puts '[x]=[s@x]}}
+    tpl/scopes;idx .;. tpl/scopes;flip . #create list of pairs <scope idx>,<scope>
+    for . {idx_scope:
+    	puts 'scope{idx_scope@0} #print scope idx
+    	keys idx_scope@1 #list of vars in scope
+    	for . {puts '[x]=[idx_scope@1@x]} #print <var name>=<var value>
+    }
 
 Pascal tirangle:
 .....1.....
@@ -518,8 +505,11 @@ Pascal tirangle:
 .1.4.6.4.1.
 
 iter [1 1] n {
-	insert x +
-	[1 . 1]
+	drop x 1 #drop first elem
+	drop x -1 #drop last elem
+	flip [.. .] #flip into list of pairs
+	map . + #add both elements in each pair
+	join 1 . 1
 }
 
 Matrix multiplication:
