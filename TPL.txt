@@ -46,8 +46,16 @@ Embedded lambdas:
 
 Variables
 ---------
+Lvalues are expected to be strings/names to which we bind rvalues.
+If lvalue is an expression, i.e. [...], then it is evaluated and is
+exprected to return string, which in turn will be interpreted as var name.
+
     x=1
 1
+
+    y='x
+    [y]=2 #now var x points to 2
+2
 
     lst=1 2 3
 1 2 3
@@ -87,22 +95,26 @@ Lists of lists:
 
 Dictionaries
 ------------
-    x@'name='joe
+    x@name='joe
 "joe"
 
-    x@'code=1234
+    x@code=1234
 1234
 
-    puts x@'name            
+    puts x@name            
 "joe"
 
-    puts x@['name 'code]    
+    a='name
+    puts x@[a]
+"joe"
+
+    puts x@[name code]    
 "joe" 1234
 
     z='na
 "na"
 
-    puts x@'[z]me
+    puts x@"[z]me"
 "joe"
 
 Proc (verb)
