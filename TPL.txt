@@ -54,17 +54,20 @@ exprected to return string, which in turn will be interpreted as var name.
 1
 
     y='x
-    [y]=2 #now var x points to 2
+    [y]=2 #now var x points to 2, something like y=&x;*y=2
 2
 
     lst=1 2 3
 1 2 3
 
     f={a b:+ a b 10}    #store lambda in variable
-{...}
+{a b:+ a...}
 
     x y=1 2        #multiple assignment
 1 2
+
+    x y=1 2 3
+ERROR: parameters mismatch
 
 Accessing list elements
 -----------------------
@@ -90,8 +93,8 @@ Lists of lists:
     puts y@0@0
 1
 
-    puts y@1@2
-6
+    puts y@1@[1 2]
+5 6
 
 Dictionaries
 ------------
@@ -101,21 +104,15 @@ Dictionaries
     x@code=1234
 1234
 
-    puts x@name            
+    puts x@name
 "joe"
 
     a='name
-    puts x@[a]
+    puts x@[a] #'a' evals to "name", which is then used as a key
 "joe"
 
-    puts x@[name code]    
+    puts x@['name 'code]    
 "joe" 1234
-
-    z='na
-"na"
-
-    puts x@"[z]me"
-"joe"
 
 Proc (verb)
 -----------
@@ -146,11 +143,11 @@ evaluated as is (apply implicit identity op to parameters).
 3
 
     {a b:+ a b}
-ERROR: missing parameters
+ERROR: missing parameter(s)
 
 Embedded expressions. First proc 'f' is invoked, then 'g':
     g 1 [f 10 20] 2
-<result of applying 'f' to 10 20 (=x), and then applying g to 1 x 2>
+<result of applying 'f' to 10 20, and then applying g to 1 <result of f> 2>
 
 String substitution
 -------------------
@@ -195,8 +192,8 @@ iter: iteratively call lambda specified number of times
 passing result of previous call to next iteration;
 iter retains all intermediate results and returns a
 list:
-    iter 0 10 {p=x;incr x;* p x}
-1 2 6 24 129 ... 10!
+    iter 1 9 {incr x;* . x}
+2 6 24 129 ... 10!
 
 filter: filter list, leave only elements the result in true:
     1 2 3 4;filter . {mod x 2;eq . 0}  
@@ -262,13 +259,13 @@ Conditional
 -----------
 eq x 1;if . {puts 'is1} else {puts 'not1}
 
-Trap
+Goto
 ----
-If no panic took place, trap command is ignored; otherwise panic will 
-unwind the stack until it encounters first trap.
-Panic parameters are assigned to names in trap command, therefore 
-number of panic parameters should match number of trap parameters.
-    {... panic 'notfound 123;...};trap {msg code: puts "[msg], [code]"}; ...
+seq 1 1000;for . {eq x 500;if . {goto 'found} else {puts x}};label 'found;
+1
+2
+...
+499
 
 Built-in procs
 --------------
@@ -290,6 +287,9 @@ Reflection/Types:
 
     parse "3.14" 'float
 3.14
+    
+    panic 'hugeerror!
+<evaluation of current script is stopped and error is printed>
 
 Math:
     + 1 2 3
